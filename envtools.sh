@@ -25,12 +25,6 @@ load_env() {
   done
 }
 
-_load_env()
-{
-  COMPREPLY=($(cd ${HOME}/.env; compgen -f ${COMP_WORDS[COMP_CWORD]}))
-}
-complete -o nospace -F _load_env load_env
-
 get_env() {
   echo ${LOAD_ENV:?no env loaded}
 }
@@ -59,8 +53,3 @@ unload_credentials() {
     export LOAD_ENV="${LOAD_ENV//${env}/}"
   fi
 }
-
-_unload_credentials() {
-  COMPREPLY=($(compgen -W "$(echo ${LOAD_ENV} | tr ' ' '\n' | egrep ^credentials)" -- ${COMP_WORDS[COMP_CWORD]}))
-}
-complete -o nospace -F _unload_credentials unload_credentials
