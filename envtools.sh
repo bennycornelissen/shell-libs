@@ -9,17 +9,19 @@ load_env() {
     local env="${env%'.env'}"
   fi
 
-  if [ -r ${HOME}/.env/${env}.env ]; then
-    if [ $(file -b --mime-type ${HOME}/.env/${env}.env) != "text/plain" ]; then
-      echo "Could not load ENV: ${env}. Not a text file"
+  local envfile="${HOME}/.env/${env}.env"
+
+  if [ -r ${envfile} ]; then
+    if [ $(file -b --mime-type ${envfile}) != "text/plain" ]; then
+      echo "Could not load ENV: ${env} in '${envfile}'. Not a text file"
       return 1
     else
-      . ${HOME}/.env/${env}.env
+      . ${envfile}
       echo "Loading ENV: ${env}"
       export LOAD_ENV="${env} ${LOAD_ENV}"
     fi
   else
-    echo "Could not find ENV: ${env}"
+    echo "Could not find ENV file ${env} with path '${envfile}'"
     return 1
   fi
 
